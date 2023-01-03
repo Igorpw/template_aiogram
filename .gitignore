@@ -1,2 +1,4 @@
-/.idea/
+/.env
+/alembic.ini
+/bot/db/migrations/
 /venv/
