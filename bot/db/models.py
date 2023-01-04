@@ -11,7 +11,7 @@ class User(Base):
     """
     __tablename__ = "users"  # Имя таблицы
     telegram_id = Column(BigInteger, nullable=False, primary_key=True)  # Телеграм id пользователя
-    role = Column(String, default='Воркер')  # Роль пользователя по умолчанию
+    role = Column(String, default='User')  # Роль пользователя по умолчанию
     registration_date = Column(DateTime, default=dt.now())  # Дата регистрации пользователя
 
     def __str__(self) -> str:

@@ -7,7 +7,7 @@ from .for_basic import router_for_basic
 router = Router()
 
 # Регистрация фильтров
-router.message.filter(RoleCheckFilter(['Создатель', 'Админ']))
+router.message.filter(RoleCheckFilter(['Staff']))
 
 # Регистрация маршрутизаторов
 router.include_router(router_for_basic)

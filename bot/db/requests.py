@@ -1,29 +1,22 @@
-from aioredis import Redis
 from sqlalchemy import select, update
 from sqlalchemy.orm import sessionmaker
 
 from bot.db.models import User
 
 
-async def is_user_exists(db_pool: sessionmaker, redis: Redis, user_id: int) -> bool:
+async def is_user_exists(db_pool: sessionmaker, user_id: int) -> bool:
     """
     Существует ли пользователь
 
     :param db_pool: Пул соединений с БД
-    :param redis: Редис
     :param user_id: Телеграм id
 
     :return: bool
     """
-    redis_get = await redis.get(f'user_exists:{user_id}')
-    if not redis_get:
-        async with db_pool() as session:
-            async with session.begin():
-                user = await session.execute(select(User).where(User.telegram_id == user_id))
-                await redis.set(name=f'user_exists:{user_id}', value=1 if user else 0)
-                return user.first()
-    else:
-        return redis_get
+    async with db_pool() as session:
+        async with session.begin():
+            user = await session.execute(select(User).where(User.telegram_id == user_id))
+            return user.first()
 
 
 async def add_user(db_pool: sessionmaker, user_id: int) -> None:

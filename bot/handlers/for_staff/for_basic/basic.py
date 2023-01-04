@@ -10,7 +10,7 @@ async def start(m: Message, db_pool: sessionmaker) -> None:
     _get_user = await get_user(db_pool, m.from_user.id)
     await m.answer('Главное меню,\n\n'
                    f'Твой роль: {_get_user.role}\n'
-                   f'В проекте: {_get_user.reg_date}', reply_markup=kb_basic())
+                   f'Время в боте: {_get_user.reg_date}', reply_markup=kb_basic())
     await m.answer('Текст с кнопкой', reply_markup=ikb_basic())
 
 
