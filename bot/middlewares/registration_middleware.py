@@ -19,7 +19,7 @@ class RegistrationMiddleware(BaseMiddleware):
         user_id = event.from_user.id
         if not await is_user_exists(db_pool, user_id):
             await add_user(db_pool, user_id)
-            if user_id == int(config.bot.staff_id):
-                await update_user(db_pool, user_id, role='Staff')
+            if user_id == int(config.bot.admin_id):
+                await update_user(db_pool, user_id, role='Admin')
 
         return await handler(event, data)

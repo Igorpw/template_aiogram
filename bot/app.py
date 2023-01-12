@@ -9,7 +9,7 @@ from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from bot.handlers import router_for_staff, router_for_all
+from bot.handlers import router_for_admin, router_for_all
 from bot.loader import config
 from bot.middlewares import RegistrationMiddleware, AntiFloodMiddleware
 
@@ -31,9 +31,9 @@ async def main() -> None:
 
     # Redis
     redis = Redis(
-        host=config.redis.host,
-        username=config.redis.username,
-        password=config.redis.password
+        # host=config.redis.host,
+        # username=config.redis.username,
+        # password=config.redis.password
     )
 
     # Bot, Dispatcher
@@ -45,7 +45,7 @@ async def main() -> None:
     dp.message.middleware(AntiFloodMiddleware())
 
     # Register Routers
-    dp.include_router(router_for_staff)
+    dp.include_router(router_for_admin)
     dp.include_router(router_for_all)
 
     # Run Forever
