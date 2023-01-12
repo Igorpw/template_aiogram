@@ -29,7 +29,7 @@
 
 **Отккрываем файл bot.ini и настраиваем его**
 
-![enter image description here](https://raw.githubusercontent.com/FastCodeProfile/template_aiogram/master/image.png)
+![enter image description here]([https://raw.githubusercontent.com/FastCodeProfile/template_aiogram/master/image.png](https://raw.githubusercontent.com/FastCodeProfile/Pictures/main/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%20%D0%BE%D1%82%202023-01-12%2020-58-36.png?token=GHSAT0AAAAAAB47G7AUENJ3GIGNNIFSM3P4Y6AJKVA))
 
 
 ## Запуск
