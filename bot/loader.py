@@ -13,7 +13,7 @@ class DB:
 @dataclass
 class Bot:
     token: str
-    staff_id: int
+    admin_id: int
 
 
 @dataclass
@@ -40,4 +40,4 @@ def load_config(path: str):
     )
 
 
-config = load_config('bot/bot.ini')
+config = load_config('bot.ini')

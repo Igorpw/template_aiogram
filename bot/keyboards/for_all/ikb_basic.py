@@ -1,6 +1,6 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup
 
-from bot.utils.for_all.for_basic.callback_data_factories import BasicAction, BasicCallback
+from bot.utils.for_all.callback_data_factories import BasicAction, BasicCallback
 
 
 def ikb_basic() -> InlineKeyboardMarkup:

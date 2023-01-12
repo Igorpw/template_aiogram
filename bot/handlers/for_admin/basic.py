@@ -2,8 +2,8 @@ from aiogram.types import CallbackQuery, Message
 from sqlalchemy.orm import sessionmaker
 
 from bot.db.requests import get_user
-from bot.keyboards.for_staff.for_basic.kb_basic import kb_basic
-from bot.keyboards.for_staff.for_basic.ikb_basic import ikb_basic
+from bot.keyboards.for_admin.kb_basic import kb_basic
+from bot.keyboards.for_admin.ikb_basic import ikb_basic
 
 
 async def start(m: Message, db_pool: sessionmaker) -> None:
