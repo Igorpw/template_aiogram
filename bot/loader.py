@@ -1,29 +1,43 @@
-from pathlib import Path
-
-from pydantic import BaseSettings, PostgresDsn, SecretStr
-
-
-class Settings(BaseSettings):
-    """
-    Настройки проекта
-    """
-
-    # Настройка бота
-    bot_token: SecretStr
-
-    # Настройка базы данных
-    postgres_dsn: PostgresDsn
-
-    # Рабочая директория
-    workdir = Path(__file__).parent
-
-    class Config:
-        """
-        Конфигурация проекта
-        """
-
-        env_file = '.env'  # Файл
-        env_file_encoding = 'utf-8'  # Кодировка
+import configparser
+from dataclasses import dataclass
 
 
-config = Settings()
+@dataclass
+class DB:
+    user: str
+    password: str
+    database: str
+    host: str
+
+
+@dataclass
+class Bot:
+    token: str
+    staff_id: int
+
+
+@dataclass
+class Redis:
+    host: str
+    username: str
+    password: str
+
+
+@dataclass
+class Config:
+    db: DB
+    bot: Bot
+    redis: Redis
+
+
+def load_config(path: str):
+    file_config = configparser.ConfigParser()
+    file_config.read(path)
+    return Config(
+        db=DB(**file_config["db"]),
+        bot=Bot(**file_config["bot"]),
+        redis=Redis(**file_config['redis'])
+    )
+
+
+config = load_config('bot/bot.ini')

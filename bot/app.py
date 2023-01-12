@@ -4,44 +4,54 @@ from logging import DEBUG, basicConfig
 
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
+from aioredis import Redis
+from sqlalchemy.engine import URL
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from aioredis import Redis
 
+from bot.handlers import router_for_staff, router_for_all
 from bot.loader import config
 from bot.middlewares import RegistrationMiddleware, AntiFloodMiddleware
-from bot.handlers import router_for_staff, router_for_all
 
 
 async def main() -> None:
-    # Запись на стандартный вывод
+    # Logging
     basicConfig(level=DEBUG, format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
 
-    # Создание движка БД для Postgres
-    engine = create_async_engine(url=config.postgres_dsn, echo=True, pool_pre_ping=True)
-
-    # Создание пула соединений с БД
+    # Postgres
+    postgres_url = URL.create(
+        "postgresql+asyncpg",
+        username=config.db.user,
+        password=config.db.password,
+        database=config.db.database,
+        host=config.db.host
+    )
+    engine = create_async_engine(url=postgres_url, echo=True, pool_pre_ping=True)
     db_pool = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
-    # Создание редиса
-    redis = Redis()
+    # Redis
+    redis = Redis(
+        host=config.redis.host,
+        username=config.redis.username,
+        password=config.redis.password
+    )
 
-    # Создание бота и его диспетчера
-    bot = Bot(config.bot_token.get_secret_value(), parse_mode='HTML')
+    # Bot, Dispatcher
+    bot = Bot(config.bot.token, parse_mode='HTML')
     dp = Dispatcher(storage=RedisStorage(redis=redis))
 
-    # Регистрация промежуточного ПО
+    # Register Middlewares
     dp.message.outer_middleware(RegistrationMiddleware())
     dp.message.middleware(AntiFloodMiddleware())
 
-    # Регистрация маршрутизаторов
+    # Register Routers
     dp.include_router(router_for_staff)
     dp.include_router(router_for_all)
 
-    # Запуск навсегда
+    # Run Forever
     await dp.start_polling(bot, db_pool=db_pool, redis=redis)
 
 
-if __name__ == '__main__':
+def bot_run():
     with suppress(KeyboardInterrupt):  # Игнорирование ошибок при остановке
         run(main())  # Запуск асинхронной функции

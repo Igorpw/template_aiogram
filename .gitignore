@@ -1,7 +1,5 @@
-/.env
-/alembic.ini
-/bot/db/migrations/
 /venv/
+/.gitignore/
 /.idea/.gitignore
 /.idea/dbnavigator.xml
 /.idea/misc.xml
